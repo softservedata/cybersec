@@ -252,8 +252,18 @@ ls
 Ми отримали доступ до панелі керування аплікаціями на вебсервері tomcat
 ![tomcatmanager.png](./сorrosion2/tomcatmanager.png)
 
+Знайдемо на сторінці керування розділ із завантаженням нових WAR файлів. Клікнемо **browse**
+![tomcatwarpart.png](./сorrosion2/tomcatwarpart.png)
 
+Завантажимо створений на попередньому кроці **revshell.war**. Виберемо з папки home файл revshell.war
+![tomcatwarupload.png](./сorrosion2/tomcatwarupload.png)
 
+За допомогою кнопки deploy розгорнемо аплікацію зворотньої оболонки на сервері tomcat
+![tomcatwardeploy.png](./сorrosion2/tomcatwardeploy.png)
+
+📌 **Результат**:
+Наша аплікація **revshell.war** розгорнута на цільовому сервері tomcat і доступна по URL **http://192.168.6.178:8080/revshell**
+![tomcatrevshell.png](./сorrosion2/tomcatrevshell.png)
 
 
 

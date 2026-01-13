@@ -340,6 +340,10 @@ cat note.txt
 
 ---
 
+
+
+
+### **Крок 10: Дослідження облікових записів користувачів**
 ### **Крок 10: Дослідження потенційних шляхів для підвищення привілеїв**
 Спробуємо увійти в систему як користувач **jaye**. Використаємо той самий пароль **melehifokivai**. Виконаємо команду:
 
@@ -437,14 +441,47 @@ cat hash.txt
 ![randyinfoall.png](./сorrosion2/randyinfoall.png)
 
 
+-----------
+Використовуючи команду **sed** збережемо лише хеш код пароля користувача **randy** у файлі **hash.txt**. Виконаємо команду:
 
-Збережемо хеш код пароля користувача **randy** у файлі з назвою hash.txt.
-Щоб зламати хеш код використаємо інструмент для злому паролів john
+5  sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo
+6  sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo
+7  sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo
 
 
-Виконаємо команду:
+sed -i s/^randy=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo
+sed -i 's/^randy://g' hash.txt
+
+
+
+-------------------------------
+Щоб зламати хеш код використаємо інструмент для злому паролів **john**.
+Виконаємо команду з ключем допомоги:
 
 ```sh
+john --help
+```
+
+Розглянемо параметри командної стрічки<br>
+- синтаксис команди: john [OPTIONS] [PASSWORD-FILES]
+- ключ: --wordlist[=FILE] --stdin використати режим списку слів, прочитати слова з файлу або з stdin.
+![johncliparameters1.png](./сorrosion2/johncliparameters1.png)
+![johncliparameters2.png](./сorrosion2/johncliparameters2.png)
+
+Використаємо набір слів з файлу **/usr/share/wordlists/rockyou.txt**. Перевіримо існування файлу:
+
+```sh
+ls /usr/share/wordlists
+```
+
+📌 **Результат**:
+Файл з типовим набором паролів міститься у папці **/usr/share/wordlists/rockyou.txt**.
+![rockyouwordslist.png](./сorrosion2/rockyouwordslist.png)
+
+Для зламу хеш коду виконаємо команду:----------------------
+
+```sh
+ls /usr/share/wordlists
 john — wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
 

@@ -7,7 +7,7 @@
 Завантажити оригінал CTF можна [тут](https://download.vulnhub.com/corrosion/Corrosion2.ova).
 
 > ⚠️ **Примітка**: Для запуску всіх віртуальних машин було використано [**Oracle VirtualBox**](https://www.virtualbox.org/). Для проходження CTF використано [**Kali Linux**](https://www.kali.org/docs/introduction/download-official-kali-linux-images/) як атакуючу машину. Використані методики призначені **виключно для освітніх цілей**.<br>
-**Відповідальность за їх застосування проти будь-яких інших цілей буде визначатись відповідно чинному законодавству.**
+> **Відповідальность за їх застосування проти будь-яких інших цілей буде визначатись відповідно чинному законодавству.**
 
 ---
 
@@ -204,8 +204,8 @@ cat tomcat-users.xml
 
 📌 **Результат**:
 Файл **tomcat-users.xml** містить облікові дані:<br>
-Користувач: **admin**<br>
-Пароль: **melehifokivai**
+- Користувач: **admin**<br>
+- Пароль: **melehifokivai**<br>
 ![tomcatusers1.png](./сorrosion2/tomcatusers1.png)
 ![tomcatusers2.png](./сorrosion2/tomcatusers2.png)
 
@@ -246,8 +246,8 @@ ls
 ![tomcathome.png](./сorrosion2/tomcathome.png)
 
 Клікнемо на кнопку **manager app**, введемо облікові дані та залогуємося за допомогою **sign in**<br>
-Користувач: **admin**<br>
-Пароль: **melehifokivai**
+- Користувач: **admin**<br>
+- Пароль: **melehifokivai**<br>
 ![tomcatcredentials.png](./сorrosion2/tomcatcredentials.png)
 
 📌 **Результат**:

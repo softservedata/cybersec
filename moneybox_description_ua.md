@@ -41,7 +41,7 @@ MoneyBox з полігону Offensive Security є машиною середнь
 Запустимо у **VirtualBox** образ Kali Linux з командним вікном<br>
 ![virtkali.png](./moneybox/virtkali.png)
 
-та цільову машину для дослідження Corrosion2<br>
+та цільову машину для дослідження MoneyBox<br>
 ![virtmoneybox.png](./moneybox/virtmoneybox.png)
 
 ---
@@ -523,4 +523,4 @@ cat .root.txt
 ✔️ Отримано **root-доступу** до цільової системи.<br>
 
 🔹 **Цей CTF був прикладом навчального завдання** для відпрацювання навичок **етичного хакінгу** та тестування на проникнення.
-## Завантажити модифікований образ віртуальної машини можна [тут](https://drive.google.com/drive/folders/1bxINfhxSll6MKwqg28uDYVZY50YsaTab).
+## Завантажити модифікований образ віртуальної машини можна [тут](https://drive.google.com/file/d/1tfr8JG-c5kOzfbcdMMcBz0ZgM-HHzfvf/view?usp=sharing).
